@@ -16,7 +16,7 @@ docker-compose will build two containers:
 1. Clone this:
 
     ```
-    git clone https://github.com/adlytaibi/sgws-dmc.gi
+    git clone https://github.com/adlytaibi/sgws-dmc
     ```
 
     ```
