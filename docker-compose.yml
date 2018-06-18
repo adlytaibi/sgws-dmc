@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web:
+    build: dmc
+    ports:
+     - "8080:8080"
+    networks:
+     - backbone
+  nginx:
+    build: ndmc
+    ports:
+     - "8443:8443"
+    networks:
+     - backbone
+    expose:
+     - 8443
+networks:
+  backbone:
+    driver: bridge

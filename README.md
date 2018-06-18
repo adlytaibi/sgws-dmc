@@ -16,11 +16,11 @@ docker-compose will build two containers:
 1. Clone this:
 
     ```
-    git clone <this_git_repository_url>
+    git clone https://github.com/adlytaibi/sgws-dmc.gi
     ```
 
     ```
-    cd <this_git_repository_name>
+    cd sgws-dmc
     ```
 
 2. Clone storagegrid-dmc into dmc directory
