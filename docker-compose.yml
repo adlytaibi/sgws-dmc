@@ -1,12 +1,14 @@
 version: '2'
 services:
   web:
+    restart: always
     build: dmc
     ports:
      - "8080:8080"
     networks:
      - backbone
   nginx:
+    restart: always
     build: ndmc
     ports:
      - "8443:8443"
