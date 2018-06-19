@@ -57,8 +57,8 @@ docker-compose will build two containers:
 	(or if accessing from the same guest https://localhost:8443)
 
 ## Further reading
-[Docker Compose](https://docs.docker.com/compose/)
-[NGINX](https://www.nginx.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
+* [NGINX](https://www.nginx.com/)
 
 ## Notes
 This is not an official NetApp repository. NetApp Inc. is not affiliated with the posted examples in any way.
