@@ -43,13 +43,15 @@ docker-compose will build two containers:
     openssl req -x509 -nodes -newkey rsa:4096 -keyout ndmc/sslkeys/host.key -out ndmc/sslkeys/host.pem -days 365 -subj "/C=CA/ST=Ontario/L=Toronto/O=Storage/OU=Team/CN=hostname"
     ```
 
-4. docker-compose
+4. (Optional) In case of an internal CA, you can add your root public certificate to `dmc/caroot/root.pem`
+
+5. docker-compose
 
     ```
     docker-compose up -d
     ```
 
-5. StorageGrid DMC service with SSL can be accessed using below URL:
+6. StorageGrid DMC service with SSL can be accessed using below URL:
 
     ```
     https://<IP_address>:8443
