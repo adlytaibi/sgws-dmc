@@ -35,13 +35,59 @@ docker-compose will build two containers:
     mkdir ndmc/sslkeys
     ```
 
-* Copy your host.pem and host.key certificate files to ndmc/sslkeys
+    1. Self-sign your own certificates: (modify `web` to match your server)
 
-* (Optionally) Self-sign your own certificates (modify `hostname` to match your server)
+        ```
+        openssl req -x509 -nodes -newkey rsa:4096 -keyout ndmc/sslkeys/host.key -out ndmc/sslkeys/host.pem -days 365 -subj "/C=CA/ST=Ontario/L=Toronto/O=Storage/OU=Team/CN=web"
+        ```
 
-    ```
-    openssl req -x509 -nodes -newkey rsa:4096 -keyout ndmc/sslkeys/host.key -out ndmc/sslkeys/host.pem -days 365 -subj "/C=CA/ST=Ontario/L=Toronto/O=Storage/OU=Team/CN=hostname"
-    ```
+    2. Or sign your SSL certificate with a CA:
+
+        1. Create private key, generate a certificate signing request
+
+            ```
+            openssl genrsa -out ndmc/sslkeys/host.key 2048
+            ```
+
+        2. Create a Subject Alternate Name configuration file `san.cnf` in `ndmc/sslkeys/`
+
+            ```
+            [req]
+            distinguished_name = req_distinguished_name
+            req_extensions = v3_req
+            prompt = no
+            default_md = sha256
+            [req_distinguished_name]
+            C = CA
+            ST = Ontario
+            L = Toronto
+            O = Storage
+            OU = Storage
+            CN = dmc
+            [v3_req]
+            keyUsage = keyEncipherment, dataEncipherment
+            extendedKeyUsage = serverAuth
+            subjectAltName = @alt_names
+            [alt_names]
+            DNS.1 = dmc
+            DNS.2 = dmc.acme.net
+            IP.1 = 1.2.3.4
+            ```
+
+        3. Generate a certificate signing request
+
+            ```
+            cd ndmc/sslkeys/
+            openssl req -new -sha256 -nodes -key host.key -out dmc.csr -config san.cnf
+            ```
+
+        4. In your CA portal use the `dmc.csr` output and the following SAN entry to sign the certificate, you should get a `certnew.pem` that can be saved as `host.pem`
+
+            ```
+            san:dns=dmc.acme.net&ipaddress=1.2.3.4
+            ```
+
+        5. Copy your `host.pem` certificate files to `ndmc/sslkeys`
 
 4. (Optional) In case of an internal CA, you can add your root public certificate to `dmc/caroot/root.pem`
 
