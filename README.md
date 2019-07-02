@@ -41,7 +41,6 @@ docker-compose will build two containers:
         openssl genrsa -out ndmc/sslkeys/host.key 2048
         ```
 
-
     2a. Self-sign your own certificates: (modify `web` to match your server)
 
         ```
