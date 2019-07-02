@@ -41,13 +41,13 @@ docker-compose will build two containers:
         openssl genrsa -out ndmc/sslkeys/host.key 2048
         ```
 
-    2a. Self-sign your own certificates: (modify `web` to match your server)
+    2. Self-sign your own certificates: (modify `web` to match your server)
 
         ```
         openssl req -x509 -nodes -newkey rsa:4096 -keyout ndmc/sslkeys/host.key -out ndmc/sslkeys/host.pem -days 365 -subj "/C=CA/ST=Ontario/L=Toronto/O=Storage/OU=Team/CN=web"
         ```
 
-    2b. Or sign your SSL certificate with a CA:
+    3. Or sign your SSL certificate with a CA:
 
         1. Create a Subject Alternate Name configuration file `san.cnf` in `ndmc/sslkeys/`
 
