@@ -35,21 +35,22 @@ docker-compose will build two containers:
     mkdir ndmc/sslkeys
     ```
 
-    1. Self-sign your own certificates: (modify `web` to match your server)
+    1. Create private key, generate a certificate signing request
+
+        ```
+        openssl genrsa -out ndmc/sslkeys/host.key 2048
+        ```
+
+
+    2a. Self-sign your own certificates: (modify `web` to match your server)
 
         ```
         openssl req -x509 -nodes -newkey rsa:4096 -keyout ndmc/sslkeys/host.key -out ndmc/sslkeys/host.pem -days 365 -subj "/C=CA/ST=Ontario/L=Toronto/O=Storage/OU=Team/CN=web"
         ```
 
-    2. Or sign your SSL certificate with a CA:
+    2b. Or sign your SSL certificate with a CA:
 
-        1. Create private key, generate a certificate signing request
-
-            ```
-            openssl genrsa -out ndmc/sslkeys/host.key 2048
-            ```
-
-        2. Create a Subject Alternate Name configuration file `san.cnf` in `ndmc/sslkeys/`
+        1. Create a Subject Alternate Name configuration file `san.cnf` in `ndmc/sslkeys/`
 
             ```
             [req]
@@ -74,20 +75,20 @@ docker-compose will build two containers:
             IP.1 = 1.2.3.4
             ```
 
-        3. Generate a certificate signing request
+        2. Generate a certificate signing request
 
             ```
             cd ndmc/sslkeys/
             openssl req -new -sha256 -nodes -key host.key -out dmc.csr -config san.cnf
             ```
 
-        4. In your CA portal use the `dmc.csr` output and the following SAN entry to sign the certificate, you should get a `certnew.pem` that can be saved as `host.pem`
+        3. In your CA portal use the `dmc.csr` output and the following SAN entry to sign the certificate, you should get a `certnew.pem` that can be saved as `host.pem`
 
             ```
             san:dns=dmc.acme.net&ipaddress=1.2.3.4
             ```
 
-        5. Copy your `host.pem` certificate files to `ndmc/sslkeys`
+        4. Copy your `host.pem` certificate files to `ndmc/sslkeys`
 
 4. (Optional) In case of an internal CA, you can add your root public certificate to `dmc/caroot/root.pem`
 
